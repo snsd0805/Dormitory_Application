@@ -1,9 +1,12 @@
 <?php
+
+include "Product_Order.php";
+
 abstract class creator
 {
     abstract function factorymethod(product $product); //select FACTORY
 
-    function factorystart(product $product){
+    function startfactory(product $product){
         return $this->factorymethod($product);//FACTORY return PRODUCT
     }
 }
