@@ -4,10 +4,10 @@ include "Product_Order.php";
 
 abstract class creator
 {
-    abstract function factorymethod(product $product); //select FACTORY
+    abstract function factorymethod(product $product);
 
     function startfactory(product $product){
-        return $this->factorymethod($product);//FACTORY return PRODUCT
+        return $this->factorymethod($product);
     }
 }
 
@@ -17,7 +17,7 @@ class factory extends creator
     function factorymethod(product $product)
     {
         $this->product=$product;
-        return $this->product->getProperties(); //PRODUCT
+        return $this->product->getProperties();
     }
 }
 ?>
