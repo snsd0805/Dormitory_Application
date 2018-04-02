@@ -1,5 +1,8 @@
 <?php
     include "Client_Order.php";
-    $work=new Application_Form_Client;
-
+    session_start();
+    if(empty($_SESSION['uid']))
+        $work=new Stu_Login_Client;
+    else
+        $work=new Application_Form_Client;
 ?>

@@ -1,5 +1,4 @@
 <?php
-include "Datamanger.php";
 abstract class widget
 {
     abstract function draw();
@@ -13,6 +12,7 @@ class Application_Form_TEXT extends widget
 
     function application_form_text()
     {
+        include "config.ini";
         $content=<<<CONTENT
             <div class="container">
                 <div class="row">
@@ -29,7 +29,15 @@ class Application_Form_TEXT extends widget
                                 </tr>
                                 <tr>
                                     <td>畢業學校：</td>
-                                    <td><input class="form-control" placeholder="例：陽明國中" type="text" name="school"></td>
+                                    <td><select name="school">
+CONTENT;
+        for($i=0;$i<$school_num;$i++){
+            $num=$i+1;//0號學校會被判斷為空值 Datamanger再修正
+            $content.="<option value='$num'>".$school_name[$i]."</option>";
+        }
+        $content.=<<<CONTENT
+</select>
+</td>
                                 </tr>
                                 <tr>
                                     <td>性別：</td>
@@ -111,126 +119,46 @@ CONTENT;
         return $content;
     }
 }
-class INSERT_COMPLETE_TEXT extends widget
+class MSGbox extends widget
 {
+    protected $msg;
+    function __construct($msg)
+    {
+        $this->msg=$msg;
+    }
+
     function draw(){
-        return $this->check_error();
+        return $this->MSGbox_text();
     }
 
-    function check_error(){
-        $error=$_GET['error'];
-        if($error==1){
-            return $this->insert_complete_text();
-        }else if($error==2){
-            return $this->insert_error_text();
-        }else{
-            return $this->insert_empty_text();
-        }
-    }
-    
-    function insert_complete_text()
+    function MSGbox_text()
     {
         $content=<<<CONTENT
         <div class="container">
                 <div class="row">
                     <div class="col-4"></div>
-                    <div class="col-8"><h1>成功送出申請表</h1>
-</div></div></div>
-<div class="container">
-                <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-8"><a href="index.php"><h1>繼續填寫新申請表</h1></a> 
-</div></div></div>
-
+                    <div class="col-8"><h1>
 CONTENT;
-        return $content;
-    }
-    function insert_error_text()
-    {
-        $content=<<<CONTENT
-        <div class="container">
-                <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-8"><h1>資料處理錯誤，<br>請與資訊媒體組聯繫</h1>
-</div></div></div>
-<div class="container">
-                <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-8"><a href="index.php"><h1>繼續填寫新申請表</h1></a> 
+        $content.=$this->msg;
+        $content.=<<<CONTENT
+</h1>
 </div></div></div>
 
-CONTENT;
-        return $content;
-    }
-    function insert_empty_text()
-    {
-        $content=<<<CONTENT
-        <div class="container">
-                <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-8"><h1>資料不可為空</h1>
-</div></div></div>
-<div class="container">
-                <div class="row">
-                    <div class="col-4"></div>
-                    <div class="col-8"><a href="index.php"><h1>繼續填寫新申請表</h1></a> 
-</div></div></div>
 
 CONTENT;
         return $content;
     }
 }
-
 class STU_LIST_TEXT extends widget
 {
-    function draw(){
-        return $this->stu_diet_text();
+    function draw()
+    {
+        return $this->stu_list_text();
     }
 
-    function stu_select_list(){
-        $list=$_GET['list'];
-        if($list='1')
-            return $this->stu_all_list_text();
-        elseif ($list='2')
-            return $
-    }
+    function stu_list_text(){
+        include_once "Datamanger.php";
 
-    function stu_diet_text(){
-        if($_GET[''])
-
-        $content="<div class=\"container\">
-                <div class=\"row\">
-                    <div class=\"col-2\"></div>
-                    <div class=\"col-8\">
-                        <br><br>
-                        <h1>彰化高中107學年度新生住宿申請表</h1>
-                     
-                        <br><br>
-                        <table class=\"table table-striped\">
-                         <thead class=\"thead-light\">
-    <tr>
-      <th scope=\"col\">姓名</th>
-      <th scope=\"col\">伙食</th>
-    </tr>
-  </thead>";
-        $list=db::STU_LIST_list();
-        while($row=$list->fetch()){
-            if($row[6]=='V')
-                $row[6]="素";
-            else
-                $row[6]="葷";
-
-            $content.="<tr>";
-            $content.="<td>".$row['1']."</td>";
-            $content.="<td>".$row['6']."</td>";
-            $content.="</tr>";
-        }
-        $content.="</table></div>                    <div class=\"col-2\"></div>
-</div></div>";
-        return $content;
-    }
-
-    function stu_all_list_text(){
         $content="<div class=\"container\">
                 <div class=\"row\">
                     <div class=\"col-2\"></div>
@@ -243,6 +171,7 @@ class STU_LIST_TEXT extends widget
                          <thead class=\"thead-light\">
     <tr>
       <th scope=\"col\">#</th>
+            <th scope=\"col\">報到序號</th>
       <th scope=\"col\">姓名</th>
       <th scope=\"col\">性別</th>
       <th scope=\"col\">出生年月日</th>
@@ -257,26 +186,26 @@ class STU_LIST_TEXT extends widget
       <th scope=\"col\">住址</th>
     </tr>
   </thead>";
-        $list=db::STU_LIST_list();
+        $list=admin::STU_LIST_list();
         while($row=$list->fetch()){
-            if($row[2]=='M')
-                $row[2]="男";
+            if($row[3]=='M')
+                $row[3]="男";
             else
-                $row[2]="女";
+                $row[3]="女";
 
-            if($row[6]=='V')
-                $row[6]="素";
+            if($row[7]=='V')
+                $row[7]="素";
             else
-                $row[6]="葷";
+                $row[7]="葷";
 
-            if($row[7]=='0')
-                $row[7]="低於183";
+            if($row[8]=='0')
+                $row[8]="低於183";
             else
-                $row[7]="高於183";
+                $row[8]="高於183";
             $content.="<tr>";
-            for($i=0;$i<=14;$i++){
-                if($i!=4&&$i!=8)
-                $content.="<td>$row[$i]</td>";
+            for($i=0;$i<=15;$i++){
+                if($i!=5&&$i!=9)
+                    $content.="<td>$row[$i]</td>";
             }
             $content.="</tr>";
         }
@@ -284,4 +213,120 @@ class STU_LIST_TEXT extends widget
         return $content;
     }
 }
+class STU_LOGIN_TEXT extends widget
+{
+    function draw(){
+        return $this->application_form_text();
+    }
+
+    function application_form_text()
+    {
+        include_once "config.ini";
+        $content=<<<CONTENT
+            <div class="container">
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <br><br>
+                        <h1>彰化高中107學年度新生住宿申請</h1>
+                        <br>
+                            <form action="login_check.php" method="post">
+  <div class="form-group">
+    <label for="exampleInputEmail1">報到序號：</label>
+    <input type="text" class="form-control" name="uid" placeholder="">
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">身份證字號：</label>
+    <input type="text" class="form-control" name="pwd" placeholder="">
+  </div>
+  
+  <button type="submit" class="btn btn-primary">登入</button>
+</form> 
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+            </div>
+
+CONTENT;
+        return $content;
+    }
+}
+class Download_TEXT extends widget
+{
+    function draw(){
+        return $this->download_text();
+    }
+
+    function download_text()
+    {
+        include_once "Datamanger.php";
+        $data=user::STU_LIST_list()->fetch();
+        if(!empty($data[3]) && $data[3]=='F')
+            $data[3]='女';
+        else
+            $data[3]='男';
+
+        if(!empty($data[7]) && $data[7]=='A')
+            $data[7]='葷';
+        else
+            $data[7]='素';
+
+        if(!empty($data[8]) && $data[8]=='1')
+            $data[8]='高於183cm';
+        else
+            $data[8]='低於183cm';
+        $content="<div class=\"container\">
+                <div class=\"row\">
+                    <div class=\"col-2\"></div>
+                    <div class=\"col-8\">
+                        <br><br>
+                        <h1>彰化高中107學年度新生住宿申請表</h1>
+                        <font size=\"3\" color=\"blue\"><li><strong> 注意：如資料填報有誤，請回到「<a href='index.php'>填寫/修改申請單」</a>重新填報 </strong></li>
+                        <font size=\"3\" color=\"blue\"><li><strong> 注意：請點選本頁面下方的「下載PDF檔」按鈕下載檔案，並自行列印申請表，於新生報到當天攜帶至報到處 </strong></li>
+                        <br><br>
+                        <table class=\"table table-striped\">
+                         ";
+        if(!empty($data[1])) {
+            $content .= "<tr><td>報到序號</td><td>" . $data[1] . "</td></tr>";
+            $content .= "<tr><td>姓名</td><td>" . $data[2] . "</td></tr>";
+            $content .= "<tr><td>性別</td><td>" . $data[3] . "</td></tr>";
+            $content .= "<tr><td>生日</td><td>" . $data[4] . "</td></tr>";
+            $content .= "<tr><td>畢業學校</td><td>" . $data[6] . "</td></tr>";
+            $content .= "<tr><td>伙食</td><td>" . $data[7] . "</td></tr>";
+            $content .= "<tr><td>身高</td><td>" . $data[8] . "</td></tr>";
+            $content .= "<tr><td>家裡電話</td><td>" . $data[10] . "</td></tr>";
+            $content .= "<tr><td>學生手機</td><td>" . $data[11] . "</td></tr>";
+            $content .= "<tr><td>家長手機</td><td>" . $data[12] . "</td></tr>";
+            $content .= "<tr><td>父親姓名</td><td>" . $data[13] . "</td></tr>";
+            $content .= "<tr><td>母親姓名</td><td>" . $data[14] . "</td></tr>";
+            $content .= "<tr><td>住址</td><td>" . $data[15] . "</td></tr>";
+            $content .= "
+  </table><br>
+  <a href='download.php'><button class='btn btn-primary'>下載PDF檔</button> </a>              
+  <br><br></div></div></div>
+    ";
+        }else{
+            $content .= "<tr><td>報到序號</td><td></td></tr>";
+            $content .= "<tr><td>姓名</td><td></td></tr>";
+            $content .= "<tr><td>性別</td><td></td></tr>";
+            $content .= "<tr><td>生日</td><td></td></tr>";
+            $content .= "<tr><td>畢業學校</td><td></td></tr>";
+            $content .= "<tr><td>伙食</td><td></td></tr>";
+            $content .= "<tr><td>身高</td><td></td></tr>";
+            $content .= "<tr><td>家裡電話</td><td></td></tr>";
+            $content .= "<tr><td>學生手機</td><td></td></tr>";
+            $content .= "<tr><td>家長手機</td><td></td></tr>";
+            $content .= "<tr><td>父親姓名</td><td></td></tr>";
+            $content .= "<tr><td>母親姓名</td><td></td></tr>";
+            $content .= "<tr><td>住址</td><td></td></tr>";
+            $content .= "
+  </table><br>
+  <a href='download.php'><button class='btn btn-primary'>下載PDF檔</button> </a>              
+  <br><br></div></div></div>
+    ";
+        }
+        return $content;
+    }
+}
+
 ?>

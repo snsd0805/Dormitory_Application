@@ -44,13 +44,8 @@ CONTENT;
   </button>
   <div class="collapse navbar-collapse  " id="navbarNav">
     <ul class="navbar-nav">
-      <li class="nav-item active">
-        <a class="nav-link" href="index.php">填寫申請表 <span class="sr-only">(current)</span></a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="list.php
-        ">察看列表</a>
-      </li>
+      
+      
     </ul>
   </div>
 </nav>
@@ -75,6 +70,98 @@ CONTENT;
         </div>
    </nav>
  
+CONTENT;
+        return $content;
+    }
+}
+
+class User_CloseHeader extends CloseHeader
+{
+    protected $content;
+    function __construct(widget $content)
+    {
+        $this->content=$content;
+    }
+
+    function draw()
+    {
+        echo $this->html_header();
+        echo $this->nacvber();
+        echo $this->content->draw();
+        echo $this->footer();
+    }
+
+
+
+    function nacvber()
+    {
+        $content=<<<CONTENT
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+  <a class="navbar-brand" href="index.php"><h1 class="title">    <img alt="國立彰化高級中學" src="img/favicon.ico" style="max-width:100px; margin-top: -6px;">
+國立彰化高中</h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse  " id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="index.php
+        ">填寫申請表</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="pdf.php
+        ">下載PDF檔案</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="logout.php
+        ">登出</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+CONTENT;
+        return $content;
+    }
+}
+class Admin_CloseHeader extends CloseHeader
+{
+    protected $content;
+    function __construct(widget $content)
+    {
+        $this->content=$content;
+    }
+
+    function draw()
+    {
+        echo $this->html_header();
+        echo $this->nacvber();
+        echo $this->content->draw();
+        echo $this->footer();
+    }
+
+    function nacvber()
+    {
+        $content=<<<CONTENT
+<nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+  <a class="navbar-brand" href="list.php"><h1 class="title">    <img alt="國立彰化高級中學" src="img/favicon.ico" style="max-width:100px; margin-top: -6px;">
+國立彰化高中</h1></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse  " id="navbarNav">
+    <ul class="navbar-nav">
+     
+      <li class="nav-item active">
+        <a class="nav-link" href="list.php
+        ">察看列表</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="logout.php
+        ">登出</a>
+      </li>
+    </ul>
+  </div>
+</nav>
 CONTENT;
         return $content;
     }
