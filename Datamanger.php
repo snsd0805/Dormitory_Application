@@ -190,7 +190,7 @@ WHERE `STU_LIST`.`uid`='$uid' AND `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `ST
 class admin extends db
 {
     static function STU_LIST_list(){
-        $sql="SELECT `STU_LIST`.*,`STU_INFORMATION`.*,`STU_CONTACT`.* 
+        $sql="SELECT  d `STU_LIST`.*,`STU_INFORMATION`.*,`STU_CONTACT`.* 
 FROM `STU_LIST`,`STU_CONTACT`,`STU_INFORMATION` 
 WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CONTACT`.`id`";
         return self::query($sql);
