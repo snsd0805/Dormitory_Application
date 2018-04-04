@@ -13,7 +13,7 @@ class Application_Form_TEXT extends widget
     function application_form_text()
     {
         include "config.ini";
-        $content=<<<CONTENT
+        $content= <<<CONTENT
             <div class="container">
                 <div class="row">
                     <div class="col-2"></div>
@@ -24,7 +24,7 @@ class Application_Form_TEXT extends widget
 
                         <br><br>
                         <table class="table table-striped">
-                            <form action="insert.php" method="post">
+                            <form action="stu_insert.php" method="post">
                                 <tr>
                                     <td>新生姓名：</td>
                                     <td><input  class="form-control"  type="text" name="name"></td>
@@ -224,7 +224,7 @@ class STU_LOGIN_TEXT extends widget
     function application_form_text()
     {
         include_once "config.ini";
-        $content=<<<CONTENT
+        $content= <<<CONTENT
             <div class="container">
                 <div class="row">
                     <div class="col-2"></div>
@@ -232,7 +232,7 @@ class STU_LOGIN_TEXT extends widget
                         <br><br>
                         <h1>彰化高中107學年度新生住宿申請</h1>
                         <br>
-                            <form action="login_check.php" method="post">
+                            <form action="stu_login_check.php" method="post">
   <div class="form-group">
     <label for="exampleInputEmail1">報到序號：</label>
     <input type="text" class="form-control" name="uid" placeholder="">
@@ -277,6 +277,40 @@ class ADMIN_LOGIN_TEXT extends widget
   </div>
   
   <button type="submit" class="btn btn-primary">登入</button>
+</form> 
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+            </div>
+
+CONTENT;
+        return $content;
+    }
+}
+class ADMIN_UPLOAD_TEXT extends widget
+{
+    function draw(){
+        return $this->application_form_text();
+    }
+
+    function application_form_text()
+    {
+        include_once "config.ini";
+        $content=<<<CONTENT
+            <div class="container">
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <br><br>
+                        <h1>新生住宿申請—上傳學生資料</h1>
+                        <br>
+                            <form action="admin_upload_check.php" method="post" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="exampleInputPassword1">選取csv檔案上傳：</label>
+    <input type="file" class="form-control" name="file">
+  </div>
+  
+  <button type="submit" class="btn btn-primary">上傳</button>
 </form> 
                     </div>
                     <div class="col-2"></div>
@@ -338,7 +372,7 @@ class Download_TEXT extends widget
             $content .= "<tr><td>住址</td><td>" . $data[15] . "</td></tr>";
             $content .= "
   </table><br>
-  <a href='download.php'><button class='btn btn-primary'>下載PDF檔</button> </a>              
+  <a href='stu_PDFdownload.php'><button class='btn btn-primary'>下載PDF檔</button> </a>              
   <br><br></div></div></div>
     ";
         }else{
@@ -357,7 +391,7 @@ class Download_TEXT extends widget
             $content .= "<tr><td>住址</td><td></td></tr>";
             $content .= "
   </table><br>
-  <a href='download.php'><button class='btn btn-primary'>下載PDF檔</button> </a>              
+  <a href='stu_PDFdownload.php'><button class='btn btn-primary'>下載PDF檔</button> </a>              
   <br><br></div></div></div>
     ";
         }

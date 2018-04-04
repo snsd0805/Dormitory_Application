@@ -49,7 +49,7 @@ class user extends db
             $_SESSION['uid']=$uid;
             header("Location:index.php");
         } else {
-            header("Location:login_error.php");
+            header("Location:stu_login_error.php");
         }
     }
 
@@ -110,9 +110,9 @@ VALUES (NULL,'$data[6]','$data[7]','$data[8]','$data[9]','$data[10]','$data[11]'
                     $error++;
 
                 if ($error == 0)
-                    header("Location:check.php?error=1");
+                    header("Location:stu_check.php?error=1");
                 else
-                    header("Location:check.php?error=2");
+                    header("Location:stu_check.php?error=2");
             }else{
                 $ans=self::STU_LIST_list()->fetch();
                 $id=$ans[0];
@@ -134,12 +134,12 @@ VALUES (NULL,'$data[6]','$data[7]','$data[8]','$data[9]','$data[10]','$data[11]'
                     $error++;
 
                 if ($error == 0)
-                    header("Location:check.php?error=4");
+                    header("Location:stu_check.php?error=4");
                 else
-                    header("Location:check.php?error=2");
+                    header("Location:stu_check.php?error=2");
             }
         } else {
-            header("Location:check.php?error=3");
+            header("Location:stu_check.php?error=3");
         }
 
     }
@@ -242,20 +242,24 @@ WHERE `STU_LIST`.`uid`='$uid' AND `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `ST
 
 class admin extends db
 {
-    static function STU_LIST_list(){
-        $sql="SELECT `STU_LIST`.*,`STU_INFORMATION`.*,`STU_CONTACT`.* 
+    static function STU_LIST_list()
+    {
+        $sql = "SELECT `STU_LIST`.*,`STU_INFORMATION`.*,`STU_CONTACT`.* 
 FROM `STU_LIST`,`STU_CONTACT`,`STU_INFORMATION` 
 WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CONTACT`.`id`";
         return self::query($sql);
     }
-    static function check_login(){
-        $pwd=$_POST['pwd'];
-        if($pwd=='chsh508b')
-            header("Location:list.php");
+
+    static function check_login()
+    {
+        $pwd = $_POST['pwd'];
+        if ($pwd == 'chsh508b')
+            header("Location:admin_list.php");
         else
             header("Location:admin_login.php");
 
     }
+
     function STU_EXCEL_OUTPUT()
     {
 
@@ -278,22 +282,22 @@ WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CON
             ->setCellValue("L1", "母親姓名")
             ->setCellValue("M1", "住址");
         $number = 2;
-        $data=self::STU_LIST_list();
-        while ($row=$data->fetch()){
-            if($row[3]=='M')
-                $row[3]="男";
+        $data = self::STU_LIST_list();
+        while ($row = $data->fetch()) {
+            if ($row[3] == 'M')
+                $row[3] = "男";
             else
-                $row[3]="女";
+                $row[3] = "女";
 
-            if($row[7]=='V')
-                $row[7]="素";
+            if ($row[7] == 'V')
+                $row[7] = "素";
             else
-                $row[7]="葷";
+                $row[7] = "葷";
 
-            if($row[8]=='0')
-                $row[8]="低於183";
+            if ($row[8] == '0')
+                $row[8] = "低於183";
             else
-                $row[8]="高於183";
+                $row[8] = "高於183";
             $objSheet
                 ->setCellValue("A$number", "$row[1]")
                 ->setCellValue("B$number", "$row[2]")
@@ -317,5 +321,35 @@ WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CON
         $objWriter->save('php://output');
 
     }
+
+    function upload()
+    {
+        if (!empty($_FILES['file']['tmp_name'])) {
+            echo "檔案名稱: " . $_FILES["file"]["name"] . "<br/>";
+            echo "檔案類型: " . $_FILES["file"]["type"] . "<br/>";
+            echo "檔案大小: " . ($_FILES["file"]["size"] / 1024) . " Kb<br />";
+            echo "暫存檔名：" . $_FILES["file"]["tmp_name"]."<br>";
+            move_uploaded_file($_FILES["file"]["tmp_name"], "STU_UPLOAD_DATA/" . $_FILES["file"]["name"]);
+
+            if ($file = fopen("STU_UPLOAD_DATA/" . $_FILES['file']['name'], "r")) {
+                $error=0;
+                while ($data = fgetcsv($file)) {
+                    $num = $data[0];
+                    $sn = $data[1];
+                    $sql = "INSERT INTO `STU_LOGIN`(`uid`, `pwd`) VALUES ('$num','$sn')";
+                    echo $USER_sql."<br>";
+                    if(!parent::insert($sql))
+                        $error++;
+                }
+                if($error==0){
+
+                }
+            }
+        }else{
+            echo "no";
+        }
+    }
+
+
 }
 ?>

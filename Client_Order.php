@@ -76,6 +76,16 @@ class Admin_Login_Client
         echo $this->factory->startfactory(new ADMIN_LOGIN);
     }
 }
+class Admin_Upload_Client
+{
+    protected $factory;
+    function __construct()
+    {
+        $this->factory=new factory();
+        echo $this->factory->startfactory(new ADMIN_UPLOAD);
+    }
+}
+
 class Login_Error_Client
 {
     protected $factory;

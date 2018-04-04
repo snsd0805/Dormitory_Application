@@ -95,7 +95,7 @@ class User_CloseHeader extends CloseHeader
 
     function nacvber()
     {
-        $content=<<<CONTENT
+        $content= <<<CONTENT
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
   <a class="navbar-brand" href="index.php"><h1 class="title">    <img alt="國立彰化高級中學" src="img/favicon.ico" style="max-width:100px; margin-top: -6px;">
 國立彰化高中</h1></a>
@@ -109,7 +109,7 @@ class User_CloseHeader extends CloseHeader
         ">填寫/修改申請表</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="pdf.php
+        <a class="nav-link" href="stu_pdf.php
         ">下載PDF檔案</a>
       </li>
       <li class="nav-item active">
@@ -141,9 +141,9 @@ class Admin_CloseHeader extends CloseHeader
 
     function nacvber()
     {
-        $content=<<<CONTENT
+        $content= <<<CONTENT
 <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-  <a class="navbar-brand" href="list.php"><h1 class="title">    <img alt="國立彰化高級中學" src="img/favicon.ico" style="max-width:100px; margin-top: -6px;">
+  <a class="navbar-brand" href="admin_list.php"><h1 class="title">    <img alt="國立彰化高級中學" src="img/favicon.ico" style="max-width:100px; margin-top: -6px;">
 國立彰化高中</h1></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -152,12 +152,16 @@ class Admin_CloseHeader extends CloseHeader
     <ul class="navbar-nav">
      
       <li class="nav-item active">
-        <a class="nav-link" href="list.php
+        <a class="nav-link" href="admin_list.php
         ">察看列表</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="ExcelOUTPUT.php
+        <a class="nav-link" href="admin_ExcelOUTPUT.php
         ">輸出EXCEL檔</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="admin_upload.php
+        ">上傳學生資料</a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="logout.php

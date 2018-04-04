@@ -19,7 +19,7 @@ class Insert_Complete implements product
     function getProperties()
     {
         // TODO: Implement getProperties() method.
-        $content=new MSGbox("填寫完成<BR><a href=\"pdf.php\"><h1>下載pdf檔</h1></a> ");
+        $content=new MSGbox("新增  資料完成<h1><a href='stu_pdf.php'>下載pdf檔</a></h1></a> ");
         $widget=new User_CloseHeader($content);
         $widget->draw();
     }
@@ -29,7 +29,7 @@ class Update_Complete implements product
     function getProperties()
     {
         // TODO: Implement getProperties() method.
-        $content=new MSGbox("更新資料完成<BR><a href=\"pdf.php\"><h1>下載pdf檔</h1></a> ");
+        $content=new MSGbox("更新資料完成<h1><a href='stu_pdf.php'>下載pdf檔</a></h1></a> ");
         $widget=new User_CloseHeader($content);
         $widget->draw();
     }
@@ -84,6 +84,16 @@ class ADMIN_LOGIN implements product
         // TODO: Implement getProperties() method.
         $content=new ADMIN_LOGIN_TEXT();
         $widget=new CloseHeader($content);
+        $widget->draw();
+    }
+}
+class ADMIN_UPLOAD implements product
+{
+    function getProperties()
+    {
+        // TODO: Implement getProperties() method.
+        $content=new ADMIN_UPLOAD_TEXT();
+        $widget=new Admin_CloseHeader($content);
         $widget->draw();
     }
 }
