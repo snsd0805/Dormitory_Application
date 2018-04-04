@@ -20,6 +20,8 @@ class Application_Form_TEXT extends widget
                     <div class="col-8">
                         <br><br>
                         <h1>彰化高中107學年度新生住宿申請表</h1>
+                                                 <font size="3" color="blue"><li><strong> 注意：如資料填報有誤，請重新填報本表 </strong></li>
+
                         <br><br>
                         <table class="table table-striped">
                             <form action="insert.php" method="post">
@@ -237,6 +239,40 @@ class STU_LOGIN_TEXT extends widget
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">身份證字號：</label>
+    <input type="text" class="form-control" name="pwd" placeholder="">
+  </div>
+  
+  <button type="submit" class="btn btn-primary">登入</button>
+</form> 
+                    </div>
+                    <div class="col-2"></div>
+                </div>
+            </div>
+
+CONTENT;
+        return $content;
+    }
+}
+class ADMIN_LOGIN_TEXT extends widget
+{
+    function draw(){
+        return $this->application_form_text();
+    }
+
+    function application_form_text()
+    {
+        include_once "config.ini";
+        $content=<<<CONTENT
+            <div class="container">
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <br><br>
+                        <h1>新生住宿申請管理員介面</h1>
+                        <br>
+                            <form action="admin_check.php" method="post">
+  <div class="form-group">
+    <label for="exampleInputPassword1">密碼：</label>
     <input type="text" class="form-control" name="pwd" placeholder="">
   </div>
   

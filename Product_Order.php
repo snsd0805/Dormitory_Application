@@ -77,6 +77,16 @@ class STU_LOGIN implements product
         $widget->draw();
     }
 }
+class ADMIN_LOGIN implements product
+{
+    function getProperties()
+    {
+        // TODO: Implement getProperties() method.
+        $content=new ADMIN_LOGIN_TEXT();
+        $widget=new CloseHeader($content);
+        $widget->draw();
+    }
+}
 class LOGIN_ERROR implements product
 {
     function getProperties()

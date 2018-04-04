@@ -63,7 +63,7 @@ CONTENT;
                 <div class="col-6"></div>
                 <div class="col-auto">
                     <h7 class="title" style="color: white">
-                    系統建置：資訊媒體組</h7>
+                    系統建置<a href="admin_login.php">：</a> 資訊媒體組</h7>
                 </div>
                 <div class="col-2"></div>
             </div>
@@ -106,7 +106,7 @@ class User_CloseHeader extends CloseHeader
     <ul class="navbar-nav">
       <li class="nav-item active">
         <a class="nav-link" href="index.php
-        ">填寫申請表</a>
+        ">填寫/修改申請表</a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="pdf.php
@@ -154,6 +154,10 @@ class Admin_CloseHeader extends CloseHeader
       <li class="nav-item active">
         <a class="nav-link" href="list.php
         ">察看列表</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="ExcelOUTPUT.php
+        ">輸出EXCEL檔</a>
       </li>
       <li class="nav-item active">
         <a class="nav-link" href="logout.php
