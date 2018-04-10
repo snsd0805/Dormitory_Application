@@ -329,6 +329,9 @@ class Download_TEXT extends widget
 
     function download_text()
     {
+        if(empty($_SESSION['uid']))
+            header("Location:index.php");
+
         include_once "Datamanger.php";
         $data=user::STU_LIST_list()->fetch();
         if(!empty($data[3]) && $data[3]=='F')

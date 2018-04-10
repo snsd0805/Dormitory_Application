@@ -42,9 +42,11 @@ class user extends db
         $uid=$_POST['uid'];
         $pwd=$_POST['pwd'];
 
-        $sql="SELECT COUNT(*) FROM `STU_LOGIN` WHERE `uid`='$uid' AND `pwd`='$pwd'";
-        $result=$this->query($sql)->fetch();
-        if (!$result[0] == 0) {
+        $sql="SELECT COUNT(*) FROM `STU_LOGIN` WHERE `uid`= :uid AND `pwd`=:pwd";
+        $result=parent::connect()->prepare($sql);
+        $result->execute((array('uid'=>$uid,'pwd'=>$pwd)));
+        $result=$result->fetch();
+        if (!$result[0] == '0') {
             session_start();
             $_SESSION['uid']=$uid;
             header("Location:index.php");
@@ -236,7 +238,7 @@ WHERE `STU_LIST`.`uid`='$uid' AND `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `ST
 
         $pdf -> writeHTML("$content","","","","","C");								//撰寫內容
 
-        $pdf -> Output('test.pdf', 'D');
+        $pdf -> Output('Application.pdf', 'D');
     }
 }
 
@@ -252,10 +254,12 @@ WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CON
 
     static function check_login()
     {
+        session_start();
         $pwd = $_POST['pwd'];
-        if ($pwd == 'chsh508b')
+        if ($pwd == 'chsh508b') {
+            $_SESSION['uid']=9999;
             header("Location:admin_list.php");
-        else
+        }else
             header("Location:admin_login.php");
 
     }
@@ -337,12 +341,12 @@ WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CON
                     $num = $data[0];
                     $sn = $data[1];
                     $sql = "INSERT INTO `STU_LOGIN`(`uid`, `pwd`) VALUES ('$num','$sn')";
-                    echo $USER_sql."<br>";
+                    echo $sql."<br>";
                     if(!parent::insert($sql))
                         $error++;
                 }
                 if($error==0){
-
+                    header("Location:admin_upload.php");
                 }
             }
         }else{
