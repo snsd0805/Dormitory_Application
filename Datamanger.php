@@ -21,7 +21,7 @@ class db
         return $db;
     }
 
-    function insert($sql){
+    function insert($sql){//無安全性顧慮INSERT
         $insert=self::connect()->prepare($sql);
         if($insert->execute())
             return true;
@@ -29,7 +29,7 @@ class db
             return false;
     }
 
-    function query($sql){
+    function query($sql){//無安全性顧慮QUERY
         $result=self::connect()->query($sql);
         return $result;
     }
@@ -73,7 +73,7 @@ class user extends db //一般使用者
         $data[10]=$_POST['mo_name'];
         $data[11]=$_POST['address'];
 
-        if($this->check_data($data)) {
+        if($this->check_data($data)) {//判斷是否為空
             if ($data[2] == "male")
                 $data[2] = 'M';
             else
@@ -91,8 +91,8 @@ class user extends db //一般使用者
             $num = $data[1] - 1;//修正學校編號
             $data[1] = $school_name[$num];
 
-            $error = 0;
-            if($this->data_empty_check()) {
+            $error = 0;//判定有無錯誤
+            if($this->data_empty_check()) {//判斷系統是否已有該學生資料 若已有則更改sql為update
                 $sql = "INSERT INTO `STU_LIST`(`id`,`uid`, `name`, `gender`, `birthday`) VALUES (NULL ,:uid ,:data0,:data2,:data3)";
                 $insert=self::connect()->prepare($sql);
                 if(!$insert->execute(
@@ -115,6 +115,7 @@ class user extends db //一般使用者
                         'data5'=>$data[5]))){
                     $error++;
                 }
+
 
                 $sql = "INSERT INTO `STU_CONTACT`(`id`, `tel`, `stu_phone`, `par_phone`, `fa_name`, `mo_name`, `address`) 
 VALUES (NULL,:data6,:data7,:data8,:data9,:data10,:data11)";
@@ -142,21 +143,40 @@ VALUES (NULL,:data6,:data7,:data8,:data9,:data10,:data11)";
                 $ans=self::STU_LIST_list()->fetch();
                 $id=$ans[0];
 
-                $sql = "UPDATE `STU_LIST` SET `name`='$data[0]',`gender`='$data[2]',`birthday`='$data[3]' WHERE `uid`='$uid'";
-                echo $sql . "<br>";
-                if (!$this->insert($sql))
+                $sql = "UPDATE `STU_LIST` SET `name`=:data0,`gender`=:data2,`birthday`=:data3 WHERE `uid`='$uid'";
+                $insert=self::connect()->prepare($sql);
+                if(!$insert->execute(
+                    array(
+                        'data0'=>$data[0],
+                        'data2'=>$data[2],
+                        'data3'=>$data[3]))){
                     $error++;
-                $sql = "UPDATE `STU_INFORMATION` SET `school`='$data[1]',`diet`='$data[4]',`height`='$data[5]' WHERE `id`='$id'";
+                }
 
-                echo $sql . "<br>";
 
-                if (!$this->insert($sql))
+                $sql = "UPDATE `STU_INFORMATION` SET `school`=:data1,`diet`=:data4,`height`=:data5 WHERE `id`='$id'";
+                $insert=self::connect()->prepare($sql);
+                if(!$insert->execute(
+                    array(
+                        'data1'=>$data[1],
+                        'data4'=>$data[4],
+                        'data5'=>$data[5]))){
                     $error++;
-                $sql = "UPDATE `STU_CONTACT` SET `tel`='$data[6]',`stu_phone`='$data[7]',`par_phone`='$data[8]',`fa_name`='$data[9]',`mo_name`='$data[10]',`address`='$data[11]' WHERE `id`='$id'";
-                echo $sql . "<br>";
+                }
 
-                if (!$this->insert($sql))
+
+                $sql = "UPDATE `STU_CONTACT` SET `tel`=:data6,`stu_phone`=:data7,`par_phone`=:data8,`fa_name`=:data9,`mo_name`=:data10,`address`=:data11 WHERE `id`='$id'";
+                $insert=self::connect()->prepare($sql);
+                if(!$insert->execute(
+                    array(
+                        'data6'=>$data[6],
+                        'data7'=>$data[7],
+                        'data8'=>$data[8],
+                        'data9'=>$data[9],
+                        'data10'=>$data[10],
+                        'data11'=>$data[11]))){
                     $error++;
+                }
 
                 if ($error == 0)
                     header("Location:stu_check.php?error=4");
@@ -169,7 +189,7 @@ VALUES (NULL,:data6,:data7,:data8,:data9,:data10,:data11)";
 
     }
 
-    function check_data($data){
+    function check_data($data){//確認post資料是否為空
 
         $empty=0;
         for($i=0;$i<=11;$i++){
@@ -187,11 +207,15 @@ VALUES (NULL,:data6,:data7,:data8,:data9,:data10,:data11)";
 
         }
     }
-    function logout(){
+
+
+    function logout(){ //登出
         session_start();
-        $_SESSION['uid']="";
+        $_SESSION['uid']="";//將session uid設為空值
     }
-    function data_empty_check(){
+
+
+    function data_empty_check(){//判斷是否已有該學生資料
 
         if(isset($_SESSION['uid']))
             $uid=$_SESSION['uid'];
@@ -202,7 +226,7 @@ VALUES (NULL,:data6,:data7,:data8,:data9,:data10,:data11)";
         else
             return false;
     }
-    static function STU_LIST_list(){
+    static function STU_LIST_list(){//學生資料
         if(isset($_SESSION['uid']))
             $uid=$_SESSION['uid'];
         $sql="SELECT `STU_LIST`.*,`STU_INFORMATION`.*,`STU_CONTACT`.* 
@@ -211,8 +235,8 @@ WHERE `STU_LIST`.`uid`='$uid' AND `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `ST
         return self::query($sql);
     }
 
-    function STU_DOWNLOAD(){
-        $data=self::STU_LIST_list()->fetch();
+    function STU_DOWNLOAD(){//學生PDF下載
+        $data=self::STU_LIST_list()->fetch();//由database取得資料
 
         if($data[3]=='F')
             $data[3]='女';
@@ -265,9 +289,9 @@ WHERE `STU_LIST`.`uid`='$uid' AND `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `ST
     }
 }
 
-class admin extends db
+class admin extends db//管理者
 {
-    static function STU_LIST_list()
+    static function STU_LIST_list()//取得學生列表
     {
         $sql = "SELECT `STU_LIST`.*,`STU_INFORMATION`.*,`STU_CONTACT`.* 
 FROM `STU_LIST`,`STU_CONTACT`,`STU_INFORMATION` 
@@ -275,7 +299,7 @@ WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CON
         return self::query($sql);
     }
 
-    static function check_login()
+    static function check_login()//管理者登入
     {
         session_start();
         $pwd = $_POST['pwd'];
@@ -287,7 +311,7 @@ WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CON
 
     }
 
-    function STU_EXCEL_OUTPUT()
+    function STU_EXCEL_OUTPUT()//輸出學生資料EXCEL檔
     {
 
         include "PHPExcel/PHPExcel.php";//引入文件
@@ -349,7 +373,7 @@ WHERE `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `STU_INFORMATION`.`id`=`STU_CON
 
     }
 
-    function upload()
+    function upload()//上傳學生資料
     {
         if (!empty($_FILES['file']['tmp_name'])) {
             echo "檔案名稱: " . $_FILES["file"]["name"] . "<br/>";
