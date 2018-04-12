@@ -1,7 +1,7 @@
 <?php
 class db
 {
-    static function connect(){
+    static function connect(){      //PDO設定
         $db_ip="127.0.0.1";
         $db_user="root";
         $db_password="pomelo8911285";
@@ -36,9 +36,9 @@ class db
 
 }
 
-class user extends db
+class user extends db //一般使用者
 {
-    function check_login(){
+    function check_login(){//登入confirm
         $uid=$_POST['uid'];
         $pwd=$_POST['pwd'];
 
@@ -49,17 +49,17 @@ class user extends db
         if (!$result[0] == '0') {
             session_start();
             $_SESSION['uid']=$uid;
-            header("Location:index.php");
+            header("Location:index.php");//轉址至表單
         } else {
-            header("Location:stu_login_error.php");
+            header("Location:stu_login_error.php");//登入錯誤
         }
     }
 
-    function check_form(){
+    function check_form(){//確認表單
         session_start();
         if(isset($_SESSION['uid']))
             $uid=$_SESSION['uid'];
-        include_once "config.ini";
+        include_once "config.ini";//使用校名
         $data[0]=$_POST['name'];
         $data[1]=$_POST['school'];
         $data[2]=$_POST['gender'];
@@ -88,33 +88,56 @@ class user extends db
                 $data[5] = '1';
             else
                 $data[5] = '0';
-            print_r($data);
             $num = $data[1] - 1;//修正學校編號
             $data[1] = $school_name[$num];
 
             $error = 0;
             if($this->data_empty_check()) {
-                $sql = "INSERT INTO `STU_LIST`(`id`,`uid`, `name`, `gender`, `birthday`) VALUES (NULL ,'$uid' ,'$data[0]','$data[2]','$data[3]')";
-                echo $sql . "<br>";
-                if (!$this->insert($sql))
+                $sql = "INSERT INTO `STU_LIST`(`id`,`uid`, `name`, `gender`, `birthday`) VALUES (NULL ,:uid ,:data0,:data2,:data3)";
+                $insert=self::connect()->prepare($sql);
+                if(!$insert->execute(
+                    array(
+                        'uid'=>$uid,
+                        'data0'=>$data[0],
+                        'data2'=>$data[2],
+                        'data3'=>$data[3]))){
                     $error++;
-                $sql = "INSERT INTO `STU_INFORMATION`(`id`, `school`, `diet`, `height`) VALUES (NULL,'$data[1]','$data[4]','$data[5]')";
+                }
 
-                echo $sql . "<br>";
 
-                if (!$this->insert($sql))
+
+                $sql = "INSERT INTO `STU_INFORMATION`(`id`, `school`, `diet`, `height`) VALUES (NULL,:data1,:data4,:data5)";
+                $insert=self::connect()->prepare($sql);
+                if(!$insert->execute(
+                    array(
+                        'data1'=>$data[1],
+                        'data4'=>$data[4],
+                        'data5'=>$data[5]))){
                     $error++;
+                }
+
                 $sql = "INSERT INTO `STU_CONTACT`(`id`, `tel`, `stu_phone`, `par_phone`, `fa_name`, `mo_name`, `address`) 
-VALUES (NULL,'$data[6]','$data[7]','$data[8]','$data[9]','$data[10]','$data[11]')";
-                echo $sql . "<br>";
-
-                if (!$this->insert($sql))
+VALUES (NULL,:data6,:data7,:data8,:data9,:data10,:data11)";
+                $insert=self::connect()->prepare($sql);
+                if(!$insert->execute(
+                    array(
+                        'data6'=>$data[6],
+                        'data7'=>$data[7],
+                        'data8'=>$data[8],
+                        'data9'=>$data[9],
+                        'data10'=>$data[10],
+                        'data11'=>$data[11]))){
                     $error++;
+                }
+
 
                 if ($error == 0)
                     header("Location:stu_check.php?error=1");
                 else
                     header("Location:stu_check.php?error=2");
+
+
+                
             }else{
                 $ans=self::STU_LIST_list()->fetch();
                 $id=$ans[0];
