@@ -117,5 +117,15 @@ class DOWNLOAD implements product
         $widget->draw();
     }
 }
+class REMIND implements product
+{
+    function getProperties()
+    {
+        // TODO: Implement getProperties() method.
+        $content=new Remind_text();
+        $widget=new USER_CloseHeader($content);
+        $widget->draw();
+    }
+}
 
 ?>

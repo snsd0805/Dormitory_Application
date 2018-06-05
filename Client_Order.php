@@ -104,5 +104,14 @@ class Download_Client
         echo $this->factory->startfactory(new DOWNLOAD);
     }
 }
+class Remind_Client
+{
+    protected $factory;
+    function __construct()
+    {
+        $this->factory=new factory();
+        echo $this->factory->startfactory(new REMIND);
+    }
+}
 
 ?>

@@ -4,7 +4,7 @@ class db
     static function connect(){      //PDO設定
         $db_ip="127.0.0.1";
         $db_user="root";
-        $db_password="";
+        $db_password="pomelo8911285";
         $db_select="Dormitory_Application";
         $db_charset = "UTF8";
 

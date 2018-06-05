@@ -402,4 +402,46 @@ class Download_TEXT extends widget
     }
 }
 
+class Remind_text extends widget
+{
+    function draw(){
+        return $this->remind_text();
+    }
+
+    function remind_text()
+    {
+        $content=<<<CONTENT
+        <div class="container">
+                <div class="row">
+                    <div class="col-2"></div>
+                        <div class="col-8">
+                        <br><br>
+                        <h2>彰化高中107學年度新生住宿申請注意事項</h2>
+                        <font color="red">※請詳閱以下注意事項</font>
+        <br><br><br>
+
+1、新生住宿採線上填表申請:截止日期<font color="red"> 107年7月12日18時止</font>。<br><br>
+2、線上填寫完畢後請<font color="red">自行列印本表</font>，由監護人簽名後，於<font color="red">7月13日新生報到時繳回</font>。<br><br>
+3、因床位有限，以居住偏遠地區且交通不便學生優先安排(未獲床位者將列入候補名單)。<br><br>
+4、新生床位將於<font color="red">8月1日下午14時</font>公佈於彰化高中網頁或電04-7276863（宿舍辦公室)。<br><br>
+5、未獲床位同學將於<font color="red">8月3日前</font>分別通知；另可洽詢專搭乘本校專車方式，有意者請連結以下網頁: <a href="http://www.chsh.chc.edu.tw/files/11-1000-771.php">彰化高中 學生專車專區</a><br><br>
+6、因本宿舍無配置醫務人員照護，如有法定傳染病、慢性疾病、心臟病、癲癇、身心疾病等，不建議申請住宿。<br><br>
+7、請新生自備寢具、餐具與盥洗用具等私人物品,並於<font color="red">新生訓練結束當天下午16時</font>開始搬入。獲配床位新生請將行李依床位搬進寢室。<font color="red">新生訓練結束當天晚間18時</font>於宿舍自修室舉行住宿生家長座談，請家長踴躍參加。<br><br>
+8、開學後一律於宿舍餐廳用餐，無法配合者請勿申請住宿，宿舍餐廳供應三餐，八人一桌，四菜二湯，伙食費（每日135元:早餐35元、午餐50元、晚餐50元），勾選素食時，須食用一個學期，不可任意更改；住宿費（每學期4,680元），列印在註冊單上一併繳納。<br><br>
+9、宿舍作息：06:30起床(開宿舍大門)→06:40早餐(開餐廳門)→07:20離舍上學→12:10午餐→17:10晚餐→19:00晚自修點名→21:30下自修→22:00關宿舍大門、打掃→23:00熄燈休息<br><br>
+10、住宿生<font color="red">可免費申請腳踏車位</font>，額滿為止。(開學後統一由教官室調查及登記，請注意宿舍訊息公告)<br><br>
+11、宿舍生活公約:請參閱(學生手冊)學生住宿輔導辦法及早點名辦法實施，個人有義務維持宿舍環境整潔、愛惜公物、相關扣分規定嚴格、無法適應此團體生活者勿申請。<br><br>
+12、宿舍每天實施內務、環境、秩序評分，每天將評分結果公告於宿舍網頁，請家長務必持續關心貴子弟扣分情形。分數扣滿30分(含以上)以書面通知家長;滿40分者，下學期不予續住;滿60分者，將當週面臨退宿處分，並不得再申請住宿。<br><br><br><br>
+<input type="button" value="同意以上事項" onclick="location.href='stu_form.php'" class="btn btn-primary">
+
+<br><br>
+</div></div>
+</div>
+</div>
+</div>
+
+CONTENT;
+        return $content;
+    }
+}
 ?>
