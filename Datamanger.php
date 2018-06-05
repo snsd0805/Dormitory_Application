@@ -254,19 +254,18 @@ WHERE `STU_LIST`.`uid`='$uid' AND `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `ST
             $data[8]='低於183cm';
 
         $content=" <table cellspacing=\"0\" cellpadding=\"1\" border=\"1\">";
-        $content.="<tr><td>報到序號</td><td>".$data[1]."</td></tr>";
-        $content.="<tr><td>姓名</td><td>".$data[2]."</td></tr>";
-        $content.="<tr><td>性別</td><td>".$data[3]."</td></tr>";
-        $content.="<tr><td>生日</td><td>".$data[4]."</td></tr>";
-        $content.="<tr><td>畢業學校</td><td>".$data[6]."</td></tr>";
-        $content.="<tr><td>伙食</td><td>".$data[7]."</td></tr>";
-        $content.="<tr><td>身高</td><td>".$data[8]."</td></tr>";
-        $content.="<tr><td>家裡電話</td><td>".$data[10]."</td></tr>";
-        $content.="<tr><td>學生手機</td><td>".$data[11]."</td></tr>";
-        $content.="<tr><td>家長手機</td><td>".$data[12]."</td></tr>";
-        $content.="<tr><td>父親姓名</td><td>".$data[13]."</td></tr>";
-        $content.="<tr><td>母親姓名</td><td>".$data[14]."</td></tr>";
-        $content.="<tr><td>住址</td><td>".$data[15]."</td></tr>";
+        //$content.="<tr><td>報到序號</td><td>".$data[1]."</td></tr>";
+        $content.="<tr><td>新生姓名：</td><td>".$data[2]."</td>";
+            $content.="<td>畢業學校：</td><td>".$data[6]."</td></tr>";
+        $content.="<tr><td>性別：</td><td>".$data[3]."</td>";
+            $content.="<td>生日：</td><td>".$data[4]."</td></tr>";
+        $content.="<tr><td>伙食：</td><td>".$data[7]."</td>";
+            $content.="<td>身高：</td><td>".$data[8]."</td></tr>";
+        $content.="<tr><td rowspan='3'>家裡電話：<br>學生手機：</td><td>".$data[10]."</td><td rowspan='3'>家長姓名 及<br>手機</td>手機:".$data[12]."<td></td></tr>";
+        $content.="<tr><td>".$data[11]."</td><td>父:".$data[13]."</td></tr>";
+        $content.="<tr><td></td><td>母:".$data[14]."</td></tr>";
+
+        $content.="<tr><td>住址</td><td rowspan='3'>".$data[15]."</td></tr>";
         $content.="
   </table><br>
   <br><br>
