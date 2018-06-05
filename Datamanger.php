@@ -261,14 +261,16 @@ WHERE `STU_LIST`.`uid`='$uid' AND `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `ST
             $content.="<td>生日：</td><td>".$data[4]."</td></tr>";
         $content.="<tr><td>伙食：</td><td>".$data[7]."</td>";
             $content.="<td>身高：</td><td>".$data[8]."</td></tr>";
-        $content.="<tr><td rowspan='3'>家裡電話：<br>學生手機：</td><td>".$data[10]."</td><td rowspan='3'>家長姓名 及<br>手機</td>手機:".$data[12]."<td></td></tr>";
-        $content.="<tr><td>".$data[11]."</td><td>父:".$data[13]."</td></tr>";
-        $content.="<tr><td></td><td>母:".$data[14]."</td></tr>";
-
-        $content.="<tr><td>住址</td><td rowspan='3'>".$data[15]."</td></tr>";
+        $content.="<tr><td rowspan='3'>家裡電話：<br>學生手機：</td><td>".$data[10]."<br>".$data[11]."</td><td rowspan='3'>家長姓名 及<br>手機</td><td>手機:".$data[12]."<br>父:".$data[13]."<br>母:".$data[14]."</td></tr>";
+        
+        $content.=<<<CONTENT
+        <tr rowspan='2'><td>家裡住址：</td><td colspan="3">
+CONTENT;
+        $content.=$data[15]."</td></tr>";
         $content.="
   </table><br>
-  <br><br>
+  <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  家長簽名：__________________________
     ";
         $pdf = new TCPDF("P", "mm", "A4", true, "UTF-8", false);
         $pdf -> setPrintHeader(false);						//是否有header
@@ -278,7 +280,7 @@ WHERE `STU_LIST`.`uid`='$uid' AND `STU_LIST`.`id`=`STU_INFORMATION`.`id` AND `ST
         $pdf -> addPage();										//新增頁面
         $pdf -> setFont('droidsansfallback','','35','',true);	//設定字型
         $pdf -> writeHTML("<BR><BR>","","","","","C");								//撰寫內容
-        $pdf->Write(0, '彰化高中宿舍新生申請表', '', 0, 'C', true, 0, false, false, 0);
+        $pdf->Write(0, '彰化高中107學年新生住宿申請表', '', 0, 'C', true, 0, false, false, 0);
         $pdf -> writeHTML("<BR><BR>","","","","","C");								//撰寫內容
         $pdf -> setFont('droidsansfallback','','15','',true);	//設定字型
 
